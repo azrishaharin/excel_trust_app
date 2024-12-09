@@ -17,7 +17,7 @@ interface AIAssistantContextType {
   pageContext: PageContext;
   messages: Message[];
   updatePageContext: (context: PageContext) => void;
-  addMessage: (message: string) => void;
+  addMessage: (message: Message) => void;
   clearMessages: () => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
@@ -84,29 +84,11 @@ export function AIAssistantProvider({ children }: { children: React.ReactNode })
     });
   }, []);
 
-  const addMessage = useCallback(async (message: string) => {
-    const newUserMessage = { role: 'user', content: message };
-    const updatedMessages = [...messages, newUserMessage];
+  const addMessage = useCallback((message: Message) => {
+    const updatedMessages = [...messages, message];
     setMessages(updatedMessages);
-    
-    // Get current page context
-    const currentPage = pageContext.pageName;
-    const pageData = pageContext.data;
-
-    // Generate AI response
-    setIsLoading(true);
-    try {
-      const aiResponse = await generateAIResponse(message, pageContext, messages);
-      const newAIMessage = { role: 'assistant', content: aiResponse };
-      const finalMessages = [...updatedMessages, newAIMessage];
-      setMessages(finalMessages);
-      localStorage.setItem('chatMessages', JSON.stringify(finalMessages));
-    } catch (error) {
-      console.error('Error generating response:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [messages, pageContext]);
+    localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
+  }, [messages]);
 
   const clearMessages = useCallback(() => {
     setMessages([]);
