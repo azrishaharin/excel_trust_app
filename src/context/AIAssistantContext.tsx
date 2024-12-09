@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { generateAIResponse } from '@/utils/openai';
 
-interface Message {
+export interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
 }
