@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useAIAssistant } from '@/context/AIAssistantContext';
 import ChatInterface from './ChatInterface';
-import CollapsibleChatbox from './CollapsibleChatbox';
 import { api } from '@/utils/api';
 
 interface Message {
@@ -37,12 +36,10 @@ export default function AIAssistant() {
   };
 
   return (
-    <CollapsibleChatbox>
-      <ChatInterface
-        messages={messages}
-        onSendMessage={handleSendMessage}
-        isLoading={isLoading}
-      />
-    </CollapsibleChatbox>
+    <ChatInterface
+      messages={messages}
+      onSendMessage={handleSendMessage}
+      isLoading={isLoading}
+    />
   );
 }
