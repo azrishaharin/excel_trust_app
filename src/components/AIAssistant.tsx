@@ -17,7 +17,7 @@ export default function AIAssistant() {
   const handleSendMessage = async (message: string) => {
     try {
       setIsLoading(true);
-      addMessage({ role: 'user', content: message });
+      addMessage(message);
 
       const response = await api.queryAI(message, pageContext);
       const data = await response.json();
@@ -26,10 +26,9 @@ export default function AIAssistant() {
         throw new Error(data.error || 'Failed to get AI response');
       }
 
-      addMessage({ role: 'assistant', content: data.response });
     } catch (error: any) {
       console.error('Error:', error);
-      addMessage("goterror");
+      addMessage("An error occurred while processing your request.");
     } finally {
       setIsLoading(false);
     }
