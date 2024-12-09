@@ -5,11 +5,6 @@ import { useAIAssistant } from '@/context/AIAssistantContext';
 import ChatInterface from './ChatInterface';
 import { api } from '@/utils/api';
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
-
 export default function AIAssistant() {
   const [isLoading, setIsLoading] = useState(false);
   const { messages, addMessage, pageContext } = useAIAssistant();
@@ -17,7 +12,7 @@ export default function AIAssistant() {
   const handleSendMessage = async (message: string) => {
     try {
       setIsLoading(true);
-      addMessage(message);
+      addMessage({ role: 'user', content: message });
 
       const response = await api.queryAI(message, pageContext);
       const data = await response.json();
@@ -28,7 +23,7 @@ export default function AIAssistant() {
 
     } catch (error: any) {
       console.error('Error:', error);
-      addMessage("An error occurred while processing your request.");
+      addMessage({ role: 'assistant', content: "An error occurred while processing your request." });
     } finally {
       setIsLoading(false);
     }
