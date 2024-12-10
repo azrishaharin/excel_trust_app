@@ -9,6 +9,9 @@ export default function AIAssistant() {
   const [isLoading, setIsLoading] = useState(false);
   const { messages, addMessage, pageContext } = useAIAssistant();
 
+  // Check if there's data in the context
+  const hasData = pageContext?.data?.totalClients > 0;
+
   const handleSendMessage = async (message: string) => {
     try {
       setIsLoading(true);
@@ -21,6 +24,10 @@ export default function AIAssistant() {
         throw new Error(data.error || 'Failed to get AI response');
       }
 
+      if (data.response) {
+        addMessage({ role: 'assistant', content: data.response });
+      }
+
     } catch (error: any) {
       console.error('Error:', error);
       addMessage({ role: 'assistant', content: "An error occurred while processing your request." });
@@ -28,6 +35,11 @@ export default function AIAssistant() {
       setIsLoading(false);
     }
   };
+
+  // Don't render the chat interface if there's no data
+  if (!hasData) {
+    return null;
+  }
 
   return (
     <ChatInterface

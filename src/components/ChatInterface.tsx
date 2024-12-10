@@ -64,6 +64,11 @@ export default function ChatInterface({ messages, onSendMessage, isLoading }: Ch
       {/* Chat Messages */}
       <div className={`${!isExpanded ? 'hidden' : 'flex flex-col h-[calc(100%-8rem)]'}`}>
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {messages.length === 0 && (
+            <div className="text-center text-gray-500">
+              <p>Welcome! How can I help you analyze your client data?</p>
+            </div>
+          )}
           {messages.map((msg, index) => (
             <div
               key={index}
