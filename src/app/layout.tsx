@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google'
 import { AIAssistantProvider } from '@/context/AIAssistantContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 import Navbar from '@/components/Navbar'
-import CollapsibleChatbox from '@/components/CollapsibleChatbox'
 import AIAssistant from '@/components/AIAssistant'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -31,9 +30,7 @@ export default function RootLayout({
                   {children}
                 </div>
               </main>
-              <CollapsibleChatbox>
-                <AIAssistant />
-              </CollapsibleChatbox>
+              <AIAssistant />
             </div>
           </AIAssistantProvider>
         </ThemeProvider>
