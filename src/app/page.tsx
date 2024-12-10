@@ -55,11 +55,19 @@ export default function Home() {
       const formData = new FormData();
       formData.append('file', file);
       if (password) {
+        console.log('Sending password:', password ? 'Yes' : 'No');
         formData.append('password', password);
       }
 
+      console.log('FormData contents:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, ':', typeof value === 'string' ? value : 'File');
+      }
+
       const response = await api.uploadExcel(formData);
+      console.log('Upload response status:', response.status);
       const result = await response.json();
+      console.log('Upload response:', result);
 
       if (response.status === 401 && result.requiresPassword) {
         setIsPasswordDialogOpen(true);
@@ -86,6 +94,7 @@ export default function Home() {
       setError(null);
       setIsPasswordDialogOpen(false);
     } catch (err: any) {
+      console.error('Error processing file:', err);
       setError(err.message);
     } finally {
       setIsLoading(false);
