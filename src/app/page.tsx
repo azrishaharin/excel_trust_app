@@ -87,31 +87,22 @@ export default function Home() {
         throw new Error('Invalid response format from server');
       }
 
-      console.log('Processing data:', result.data);
-      
-      try {
-        // Process the uploaded data
-        const processResponse = await api.processClients(result.data);
-        const processedResult = await processResponse.json();
+      // Process the data client-side
+      const processedData = result.data.map((row: any) => ({
+        ...row,
+        // Add any additional processing here if needed
+        // For example:
+        Status: row.Status || 'Pending',
+        'Commenced Date': row['Commenced Date'] || new Date().toISOString().split('T')[0]
+      }));
 
-        if (!processResponse.ok) {
-          throw new Error(processedResult.error || 'Failed to process client data');
-        }
+      console.log('Processed data:', processedData);
 
-        console.log('Processed result:', processedResult);
+      // Store processed data in localStorage
+      localStorage.setItem('clients', JSON.stringify(processedData));
+      setClients(processedData);
+      setCurrentFile(null);
 
-        // Store clients in localStorage and update state
-        if (processedResult.data) {
-          localStorage.setItem('clients', JSON.stringify(processedResult.data));
-          setClients(processedResult.data);
-          setCurrentFile(null);
-        } else {
-          throw new Error('No data received from process-clients endpoint');
-        }
-      } catch (processError: any) {
-        console.error('Error processing clients:', processError);
-        setError(processError.message);
-      }
     } catch (err: any) {
       console.error('Error processing file:', err);
       setError(err.message);
