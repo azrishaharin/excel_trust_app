@@ -1,10 +1,11 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://excel-trust-backend.onrender.com';
 
 export const api = {
   uploadExcel: async (formData: FormData) => {
     const response = await fetch(`${API_URL}/upload`, {
       method: 'POST',
       body: formData,
+      credentials: 'include',
     });
     return response;
   },
@@ -16,6 +17,7 @@ export const api = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+      credentials: 'include',
     });
     return response;
   },
@@ -27,6 +29,7 @@ export const api = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query, context }),
+      credentials: 'include',
     });
     return response;
   },
