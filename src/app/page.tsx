@@ -216,14 +216,14 @@ export default function Home() {
       <div className="mb-8">
         <label
           htmlFor="file-upload"
-          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-50"
+          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg cursor-pointer bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
-            <CloudArrowUpIcon className="h-12 w-12 text-gray-400 mb-4" />
-            <p className="mb-2 text-sm text-gray-500">
+            <CloudArrowUpIcon className="h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
+            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-semibold">Click to upload</span> or drag and drop
             </p>
-            <p className="text-xs text-gray-500">Excel files only</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Excel files only</p>
           </div>
           <input
             id="file-upload"
