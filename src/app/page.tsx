@@ -79,20 +79,39 @@ export default function Home() {
         throw new Error(result.error || 'Failed to process Excel file');
       }
 
-      // Process the uploaded data
-      const processResponse = await api.processClients(result.data);
-      const processedResult = await processResponse.json();
+      // Successfully got the data, close the password dialog
+      setIsPasswordDialogOpen(false);
+      setError(null);
 
-      if (!processResponse.ok) {
-        throw new Error(processedResult.error || 'Failed to process client data');
+      if (!result.data || !result.headers) {
+        throw new Error('Invalid response format from server');
       }
 
-      // Store clients in localStorage
-      localStorage.setItem('clients', JSON.stringify(processedResult.data));
-      setClients(processedResult.data);
-      setCurrentFile(null);
-      setError(null);
-      setIsPasswordDialogOpen(false);
+      console.log('Processing data:', result.data);
+      
+      try {
+        // Process the uploaded data
+        const processResponse = await api.processClients(result.data);
+        const processedResult = await processResponse.json();
+
+        if (!processResponse.ok) {
+          throw new Error(processedResult.error || 'Failed to process client data');
+        }
+
+        console.log('Processed result:', processedResult);
+
+        // Store clients in localStorage and update state
+        if (processedResult.data) {
+          localStorage.setItem('clients', JSON.stringify(processedResult.data));
+          setClients(processedResult.data);
+          setCurrentFile(null);
+        } else {
+          throw new Error('No data received from process-clients endpoint');
+        }
+      } catch (processError: any) {
+        console.error('Error processing clients:', processError);
+        setError(processError.message);
+      }
     } catch (err: any) {
       console.error('Error processing file:', err);
       setError(err.message);
